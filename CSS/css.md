@@ -58,7 +58,9 @@ CSS盒模型本质上是一个盒子，封装周围的HTML元素，它包括： 
 - ```flex:auto``` : 等同于 ```flex: 1 1 auto``` 按内容分
 
 
-## 垂直居中有哪些方式？<a href="https://github.com/Ricoshallow/fontBlog/CSS/verticalCenter.html" title="verticalCenter">verticalCenter.html</a>
+## 垂直居中有哪些方式？ 
+
+[verticalCenter.html](./verticalCenter.html)
 
 块级元素：
 1. 绝对定位```top:50%``` -- 需要知道被居中块级元素的尺寸  
@@ -70,4 +72,6 @@ CSS盒模型本质上是一个盒子，封装周围的HTML元素，它包括： 
 
 1. 使用```line-height```使单行文本垂直居中
 2. 使用 ```display：table-cell``` 和 ```vertical-align``` 对容器里的多行文字进行垂直居中
+
+
 
