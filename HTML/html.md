@@ -16,6 +16,18 @@
 3. href 是 Hypertext Reference 的缩写，指向⽹络资源所在位置，建⽴和当前元素或当前⽂
 档（链接）之间的链接，浏览器解析到该元素时会并⾏下载资源并且不会停⽌对当前⽂档的处理。
 
+## script标签中defer和async有什么区别？
+
+联系：
+
+这两个属性可以防止script标签造成的渲染阻塞（解析渲染 DOM）
+
+区别：
+
+- async: 加载和渲染后续文档元素的过程将和 script.js 的加载与执行并行进行（异步）。
+- defer: 加载后续文档元素的过程将和 script.js 的加载并行进行（异步），script.js 的执行要在所有元素解析完成之后，DOMContentLoaded 事件触发之前完成。
+![deferandasync](../images/deferandasync.png)
+
 
 ## 什么是HTML5离线存储？
 概念：
