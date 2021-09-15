@@ -43,7 +43,7 @@
      - no-store： 禁止缓存，每次请求都要向服务器重新获取数据
      <br>
      <br>
-     ![images](/images/Cache-control.png)
+     ![images](../images/Cache-control.png)
 
 
 ### 协商缓存
@@ -77,4 +77,19 @@
 - 强制刷新 (Ctrl + F5)：浏览器不使用缓存，因此发送的请求头部均带有 Cache-control: no-cache(为了兼容，还带了 Pragma: no-cache)。服务器直接返回 200 和最新内容。
 
 
-## 
+## 了解http2.0吗？
+
+HTTP/1.1存在的问题：
+
+1. 线头阻塞，TCP连接上只能发送一个请求，前面点请求未完成前，后续的请求需要排队等待。
+2. 多个TCP连接，HTTP/1.1管线化可以支持请求并发，但是浏览器很难实现。
+3. 头部冗余，采用文本格式，首部未压缩（cookie、user-agent等相同字段重复发送）
+4. 客户端需要主动请求
+
+HTTP/2.0的特点：
+
+1. 二进制分帧层：一条HTTP响应划分为两个帧[ HEADERS（首部）和DATA（消息负载）]来传输，并采用二进制来编码 ![HTTP/2.0](../images/http2.0.jpg)
+2. 多路复用：HTTP2让所有的通信都在一个TCP连接上完成，实现请求并发.HTTP2建立一个TCP连接，一个连接上面可以有任意多个流（stream），消息分割成一个或多个帧在流里面传输。帧传输过去以后，再进行重组，形成一个完整的请求或响应。这使得所有的请求或响应都无法阻塞 ![HTTP/2.0](../images/http2.0Multiplexing.jpg)
+3. 头部压缩：http/2使用encoder来减少需要传输的header大小，通讯双方各自缓存一份头部字段表，既避免了重复header的传输，又减小了需要传输的大小。
+4. 服务器端推送：服务器可以对一个客户端请求发送多个响应，省去了客户端重复请求的步骤。![HTTP/2.0](../images/http2.0serverPush.jpg)
+
