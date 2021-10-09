@@ -66,7 +66,7 @@
 
 
 ### sevice worker
-
+Service workers 本质上充当 Web 应用程序、浏览器与网络（可用时）之间的代理服务器。这个 API 旨在创建有效的离线体验，它会拦截网络请求并根据网络是否可用采取来适当的动作、更新来自服务器的的资源。它还提供入口以推送通知和访问后台同步 API。[(MDN)](https://developer.mozilla.org/zh-CN/docs/Web/API/Service_Worker_API)
 
 ### 浏览器的行为
 
@@ -93,3 +93,62 @@ HTTP/2.0的特点：
 3. 头部压缩：http/2使用encoder来减少需要传输的header大小，通讯双方各自缓存一份头部字段表，既避免了重复header的传输，又减小了需要传输的大小。
 4. 服务器端推送：服务器可以对一个客户端请求发送多个响应，省去了客户端重复请求的步骤。![HTTP/2.0](../images/http2.0serverPush.jpg)
 
+ 
+
+## get请求和post请求的区别？
+- ```请求参数```：GET请求参数是通过URL传递的，多个参数以&连接，POST请求放-在request body中。
+- ```安全性```：POST比GET安全，GET请求在浏览器回退时是无害的，而POST会再次请求。
+- ```历史记录```：GET请求参数会被完整保留在浏览历史记录里，而POST中的参数-不会被保留。
+- ```编码方式```：GET请求只能进行url编码，而POST支持多种编码方式。
+- ```对参数的数据类型```：GET只接受ASCII字符，而POST没有限制。
+- ```请求缓存```：GET请求会被缓存，而POST请求不会，除非手动设置。
+- ```收藏为书签```：GET请求支持，POST请求不支持。
+
+## 保持用户登录态有哪些方法？
+
+### cookies + session
+
+- cookies
+
+    cookies属于客户端存储，每次浏览器请求会自动将cookies加入到请求头中。
+
+- session
+
+    session属于服务器端存储，保存用户的sessionId,用户首次登录后将sessionId通过cookies发送到客户端。
+    服务器收到客户端请求时，看cookies里面是否有正确的sessionId，响应相应的登录态页面
+
+### token
+
+- 服务器端
+
+    服务器不再需要维护状态表，他仅给客户端发送一个加密的数据token，客户端每次请求都带上这个加密的数据，服务器再解密验证是否合法即可
+- 客户端存储
+
+    存在cookie中，虽然设置HttpOnly可以有效防止XSS攻击中token被窃取，但是也就意味着客户端无法获取token来设置CORS头部。
+
+    存在sessionStorage或者localStorage中，可以设置头部解决跨域资源共享问题，同时也可以防止CSRF，但是就需要考虑XSS的问题防止凭证泄露。
+
+
+
+## XSS攻击和CSRF攻击的原理是什么？
+### XSS
+- 原理（跨站脚本攻击）
+
+    攻击者往Web页面里插入恶意的Script代码，当用户浏览该页之时，嵌入其中Web里面的Script代码会被执行，从而达到恶意攻击用户的目的。
+![XSS](../images/xss.png)    
+- 类型
+    反射型
+        诱使用户点击包含恶意代码的URL，常用来盗取客户端Cookies
+    存储型
+        将恶意代码提交存储在服务器端，用户访问网站时服务器会响应恶意代码
+    DOM-based型
+        通过恶意脚本修改页面的 DOM 结构
+
+- 防范
+    对特殊字符如”<”,”>”进行转义
+    对重要的cookies设置httpOnly,防止客户端通过document.cookies读取cookies,此http头有服务器端设置
+### CSRF
+- 原理（跨站请求伪造）
+    
+    伪造请求，冒充用户在站内的正常操作
+![csrf](../images/CSRF.png)
